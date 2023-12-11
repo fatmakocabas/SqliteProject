@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "8UpYnWgxp+RH+X0TYgoeR6eK+xfckF8I3QxrkaNQsOSRBb+PHyo+q0O8ASBiLDXkgkAlbuG/Dki4qmCeV7I2ug==",
+  "dgSpecHash": "Wu5hojNiEnAElngPHxoIV+K4g4yZlgcnEwhYGbqQ/QcuJC9zzmT33jn101/BmGLevcAeb6DTANzQObIap9mqNQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\kocabas.fatma\\Desktop\\helloworld\\SqLiteProject\\SqLiteProject\\SqLiteProject.csproj",
   "expectedPackageFiles": [
@@ -24,6 +24,7 @@
     "C:\\Users\\kocabas.fatma\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\kocabas.fatma\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
     "C:\\Users\\kocabas.fatma\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\kocabas.fatma\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.0\\microsoft.visualstudio.azure.containers.tools.targets.1.17.0.nupkg.sha512",
     "C:\\Users\\kocabas.fatma\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.0.6\\sqlitepclraw.bundle_e_sqlite3.2.0.6.nupkg.sha512",
     "C:\\Users\\kocabas.fatma\\.nuget\\packages\\sqlitepclraw.core\\2.0.6\\sqlitepclraw.core.2.0.6.nupkg.sha512",
     "C:\\Users\\kocabas.fatma\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.0.6\\sqlitepclraw.lib.e_sqlite3.2.0.6.nupkg.sha512",

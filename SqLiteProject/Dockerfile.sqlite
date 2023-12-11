@@ -1,0 +1,8 @@
+﻿# Dockerfile for SQLite
+FROM sqlite:latest
+
+WORKDIR /data
+
+COPY ./Data /data
+
+CMD ["sqlite3", "SqliteDb.db"]
