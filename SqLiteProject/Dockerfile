@@ -4,7 +4,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["SqLiteProject/SqLiteProject.csproj", "SqLiteProject/"]
-RUN dotnet restore "SqLiteProject/SqLiteProject.csproj"
+RUN dotnet restore "SqLiteProject/SqLiteProject.csproj" --verbosity normal
 COPY . .
 WORKDIR "/src/SqLiteProject"
 RUN dotnet build "SqLiteProject.csproj" -c Release -o /app/build
