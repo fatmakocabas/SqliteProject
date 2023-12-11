@@ -1,29 +1,20 @@
-# create the build instance
-FROM mcr.microsoft.com/dotnet/core/sdk:6.0.400 AS build
+FROM mcr.microsoft.com/dotnet/core/aspnet AS base
+WORKDIR /app
+EXPOSE 80
 
-WORKDIR /source
-COPY /. ./
-
-# restore
+FROM mcr.microsoft.com/dotnet/core/sdk AS build
+WORKDIR /app
+COPY SqLiteProject.csproj .
 RUN dotnet restore
+COPY . .
+RUN dotnet build -c Release
 
-# build with configuration
-RUN dotnet build SqLiteProject.csproj -c Release
+FROM build AS publish
+RUN dotnet publish -c Release -o /publish
 
-RUN dotnet publish SqLiteProject.csproj -c Release -o /src/output
 
-# create the runtime instance
-FROM mcr.microsoft.com/dotnet/aspnet:6.0.3-alpine3.15-arm64v8 AS runtime
-
-# add globalization support
-RUN apk add --no-cache icu-libs
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-
-# install required packages
-# Use the default repo for libgdiplus
-RUN apk add libgdiplus
-
-COPY --from=build /src/output .
-
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /publish .
 
 ENTRYPOINT ["dotnet", "SqLiteProject.dll"]
