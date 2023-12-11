@@ -8,6 +8,6 @@ services:
     depends_on:
       - db
   db:
-    image: "your-sqlite-image-name:tag"
+    image: "sqlitedb"
     volumes:
       - ./Data:/path/in/container/to/mount
