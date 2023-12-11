@@ -1,5 +1,5 @@
 # create the build instance
-FROM mcr.microsoft.com/dotnet/core/sdk:6.0.300 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:6.0.400 AS build
 
 WORKDIR /source
 COPY /. ./
@@ -13,7 +13,7 @@ RUN dotnet build SqLiteProject.csproj -c Release
 RUN dotnet publish SqLiteProject.csproj -c Release -o /src/output
 
 # create the runtime instance
-FROM mcr.microsoft.com/dotnet/core/aspnet:6.0-bullseye AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.3-alpine3.15-arm64v8 AS runtime
 
 # add globalization support
 RUN apk add --no-cache icu-libs
