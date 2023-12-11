@@ -1,18 +1,25 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
-
+# Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["SqLiteProject/SqLiteProject.csproj", "SqLiteProject/"]
-RUN dotnet restore "SqLiteProject/SqLiteProject.csproj" --verbosity normal
+
+# Copy the entire project
 COPY . .
+
+# Restore NuGet packages
 WORKDIR "/src/SqLiteProject"
+RUN dotnet restore
+
+# Build the project
 RUN dotnet build "SqLiteProject.csproj" -c Release -o /app/build
 
-FROM build AS publish
+# Publish the project
 RUN dotnet publish "SqLiteProject.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
+# Runtime Stage
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+# Copy the published output from the publish stage
+COPY --from=build /app/publish .
+
 ENTRYPOINT ["dotnet", "SqLiteProject.dll"]
