@@ -8,9 +8,9 @@ COPY /. ./
 RUN dotnet restore
 
 # build with configuration
-RUN dotnet build TodoApi.csproj -c Release
+RUN dotnet build SqLiteProject.csproj -c Release
 
-RUN dotnet publish TodoApi.csproj -c Release -o /src/output
+RUN dotnet publish SqLiteProject.csproj -c Release -o /src/output
 
 # create the runtime instance
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine AS runtime
