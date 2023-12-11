@@ -1,0 +1,21 @@
+﻿@model SqLiteProject.Models.UserModel
+@{
+    ViewData["Title"] = "Kullanıcı Ekle";
+}
+
+<form action="/home/addusers" method="post">
+    <div class="mb-3">
+        <label  class="form-label">Email </label>
+        <input type="email" class="form-control" asp-for="Email">
+       
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Adı</label>
+        <input type="text" class="form-control" asp-for="Name">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Kullanıcı Adı</label>
+        <input type="text" class="form-control" asp-for="UserName">
+    </div>
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>

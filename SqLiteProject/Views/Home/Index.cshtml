@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Kullanıcılar";
+}
+
+<div class="container">
+    @if (ViewBag.users != null && ViewBag.users.Count >= 1)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Adı</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Kullanıcı Adı</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in ViewBag.users)
+                {
+                    <tr>
+                        <td>@user.Name</td>
+                        <td>@user.Email</td>
+                        <td>@user.UserName</td>
+                    </tr>
+
+                }
+
+            </tbody>
+        </table>
+    }
+
+</div>
