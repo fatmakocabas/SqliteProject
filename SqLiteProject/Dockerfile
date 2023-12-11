@@ -1,23 +1,22 @@
-﻿# Build Stage
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-WORKDIR /source
-COPY . .
-
-RUN dotnet restore 
-RUN dotnet build "SqLiteProject.csproj" -c Release
-RUN dotnet publish "SqLiteProject.csproj" -c Release -o /src/output
-
-# Runtime Stage
-FROM mcr.microsoft.com/dotnet/core/aspnet:6.0-alpine as runtime
-
-RUN apk add --no-cache icu-libs
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-
-RUN apk add --no-cache libgdiplus --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
-RUN apk add --no-cache libc-dev
-
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-COPY --from=build /src/output .
+EXPOSE 80
+EXPOSE 443
 
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["SqLiteProject/SqLiteProject.csproj", "SqLiteProject/"]
+RUN dotnet restore "SqLiteProject/SqLiteProject.csproj"
+COPY . .
+WORKDIR "/src/SqLiteProject"
+RUN dotnet build "SqLiteProject.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "SqLiteProject.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "SqLiteProject.dll"]
