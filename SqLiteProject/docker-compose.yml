@@ -1,14 +1,14 @@
 ﻿version: '3.8'
 
 services:
- web:
-  image: sqliteproject
-  ports:
-    - "8081:80"
-  depends_on:
-    - db
-  command: ["bash", "-c", "dotnet ef database update && dotnet watch run"]
- db:
-  image: "sqlitedb"
-  volumes:
+  web:
+    image: sqliteproject
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    command: ["bash", "-c", "dotnet ef database update --project SqLiteProject"]
+  db:
+    image: "sqlitedb"
+    volumes:
       - ./Data:/path/in/container/to/mount
