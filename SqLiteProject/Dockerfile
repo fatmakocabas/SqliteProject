@@ -1,13 +1,13 @@
 # Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
+
+# Copy only the necessary files for restore
+COPY SqLiteProject/SqLiteProject.csproj /src/SqLiteProject/
+WORKDIR /src/SqLiteProject
+RUN dotnet restore
 
 # Copy the entire project
 COPY . .
-
-# Restore NuGet packages
-WORKDIR "/src/SqLiteProject"
-RUN dotnet restore
 
 # Build the project
 RUN dotnet build "SqLiteProject.csproj" -c Release -o /app/build
