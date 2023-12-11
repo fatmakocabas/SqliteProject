@@ -1,5 +1,7 @@
 ﻿# Dockerfile for SQLite
-FROM sqlite:latest
+FROM alpine:latest
+
+RUN apk add --no-cache sqlite
 
 WORKDIR /data
 
