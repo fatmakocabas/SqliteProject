@@ -1,25 +1,28 @@
-# Build Stage
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# create the build instance
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 
-# Copy only the necessary files for restore
-COPY SqLiteProject/SqLiteProject.csproj /src/SqLiteProject/
-WORKDIR /src/SqLiteProject
+WORKDIR /source
+COPY /. ./
+
+#restore
 RUN dotnet restore
 
-# Copy the entire project
-COPY . .
+# build with configuration
+RUN dotnet build TodoApi.csproj -c Release
 
-# Build the project
-RUN dotnet build "SqLiteProject.csproj" -c Release -o /app/build
+RUN dotnet publish TodoApi.csproj -c Release -o /src/output
 
-# Publish the project
-RUN dotnet publish "SqLiteProject.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# create the runtime instance
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine AS runtime
 
-# Runtime Stage
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
-WORKDIR /app
+# add globalization support
+RUN apk add --no-cache icu-libs
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
-# Copy the published output from the publish stage
-COPY --from=build /app/publish .
+# installs required packages
+RUN apk add libgdiplus --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
+RUN apk add libc-dev --no-cache
+
+COPY --from=build /src/output .
 
 ENTRYPOINT ["dotnet", "SqLiteProject.dll"]
