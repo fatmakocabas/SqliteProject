@@ -1,6 +1,4 @@
-﻿# Dockerfile for .NET MVC Project
-
-# Build Stage
+﻿# Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
@@ -12,6 +10,9 @@ RUN dotnet restore
 
 # Build the project
 RUN dotnet build -c Release -o /app/build
+
+# Install dotnet-ef global tool
+RUN dotnet tool install --global dotnet-ef
 
 # Run migrations
 RUN dotnet ef database update --project SqLiteProject
