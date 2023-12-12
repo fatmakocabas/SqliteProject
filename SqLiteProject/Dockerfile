@@ -21,4 +21,7 @@ WORKDIR /app
 # Copy the published output from the publish stage
 COPY --from=build /app/publish .
 
+# Apply migrations during image build
+RUN dotnet ef database update --project SqLiteProject
+
 ENTRYPOINT ["dotnet", "SqLiteProject.dll"]
