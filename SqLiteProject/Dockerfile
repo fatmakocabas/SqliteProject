@@ -1,18 +1,21 @@
-# Build Stage
+﻿# Dockerfile for SQLite
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
-# Copy the entire project
-COPY . .
+# Install SQLite
+RUN apk add --no-cache sqlite
 
-# Restore NuGet packages
-RUN dotnet restore
+# Create a working directory
+WORKDIR /data
 
-# Build the project
-RUN dotnet build "SqLiteProject.csproj" -c Release -o /app/build
+# Copy the SQLite database file
+COPY ./Data/SqliteDb.db /data/
 
-# Publish the project
-RUN dotnet publish "SqLiteProject.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# Install .NET SDK
+RUN dotnet --version
+
+# Apply migrations during image build
+RUN dotnet ef database update --project SqLiteProject
 
 # Runtime Stage
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
@@ -21,7 +24,5 @@ WORKDIR /app
 # Copy the published output from the publish stage
 COPY --from=build /app/publish .
 
-# Apply migrations during image build
-RUN dotnet ef database update --project SqLiteProject
-
+# Command to run when the container starts
 ENTRYPOINT ["dotnet", "SqLiteProject.dll"]
