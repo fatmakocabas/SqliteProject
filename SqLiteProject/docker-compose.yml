@@ -8,6 +8,10 @@ services:
     depends_on:
       - db
     command: ["bash", "-c", "dotnet ef database update --project SqLiteProject"]
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development  # Geliştirme ortamını etkinleştir
+    volumes:
+      - ./Data:/app/Data  # Proje içindeki Data dizinini, konteyner içindeki /app/Data dizinine bağla
   db:
     image: "sqlitedb"
     volumes:
