@@ -13,6 +13,10 @@ RUN dotnet restore
 # Build the project
 RUN dotnet build -c Release -o /app/build
 
+# Run migrations
+RUN dotnet ef database update --project SqLiteProject
+
+
 # Publish the project
 RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 

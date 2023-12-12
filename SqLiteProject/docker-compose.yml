@@ -20,4 +20,4 @@ services:
       context: .
       dockerfile: Dockerfile.sqlite
     volumes:
-      - ./Data:/path/in/container/to/mount
+       - ./Data:/app/Data:ro
