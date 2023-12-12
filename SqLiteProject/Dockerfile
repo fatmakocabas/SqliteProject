@@ -14,7 +14,12 @@ RUN dotnet build -c Release -o /app/build
 # Install dotnet-ef global tool
 RUN dotnet tool install --global dotnet-ef --version 6.0.11
 
+# Set PATH for dotnet-ef
+ENV PATH="/usr/local/bin:$PATH"
+
+# Copy Migrations folder
 COPY ./Migrations /app/Data/Migrations
+
 # Run migrations
 RUN dotnet ef database update --project SqLiteProject
 
