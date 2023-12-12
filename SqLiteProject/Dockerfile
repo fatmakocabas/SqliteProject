@@ -12,7 +12,7 @@ RUN dotnet restore
 RUN dotnet build -c Release -o /app/build
 
 # Install dotnet-ef global tool
-RUN dotnet tool install --global dotnet-ef
+RUN dotnet tool install --global dotnet-ef --version 6.0.11
 
 # Run migrations
 RUN dotnet ef database update --project SqLiteProject
