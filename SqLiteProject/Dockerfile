@@ -14,9 +14,9 @@ RUN dotnet build -c Release -o /app/build
 # Install dotnet-ef global tool
 RUN dotnet tool install --global dotnet-ef --version 6.0.11
 
+COPY ./Migrations /app/Data/Migrations
 # Run migrations
 RUN dotnet ef database update --project SqLiteProject
-
 
 # Publish the project
 RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
