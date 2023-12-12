@@ -14,14 +14,17 @@ RUN dotnet tool install --global dotnet-ef --version 6.0.11
 # Set PATH for dotnet-ef
 ENV PATH="/root/.dotnet/tools:$PATH"
 
+# Change working directory to the project
+WORKDIR /app/SqLiteProject
+
+# Build the project
+RUN dotnet build -c Release -o /app/build
+
 # Copy Migrations folder
 COPY ./Migrations /app/Data/Migrations
 
 # Run migrations
-RUN dotnet ef database update --project SqLiteProject
-
-# Build the project
-RUN dotnet build -c Release -o /app/build
+RUN dotnet ef database update
 
 # Publish the project
 RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
