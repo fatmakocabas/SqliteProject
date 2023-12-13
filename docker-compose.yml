@@ -1,10 +1,18 @@
-version: '3.4'
-
+version: '3.8'
 services:
-  sqliteproject:
-    image: sqliteproject
+  web:
     build:
       context: .
       dockerfile: SqLiteProject/Dockerfile
     ports:
-      - 8082:80
+      - "8082:80"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ./Data:/app/Data
+  db:
+    image: sqlite:latest
+    volumes:
+      - ./Data:/data
