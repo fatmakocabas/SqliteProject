@@ -9,7 +9,8 @@ services:
       - "8081:80"
     depends_on:
       - db
-    command: ["bash", "-c", "dotnet ef database update --project SqLiteProject"]
+    command: ["bash", "-c", "dotnet ef database update --project SqLiteProject && dotnet watch run"]
+
     environment:
       - ASPNETCORE_ENVIRONMENT=Development  # Geliştirme ortamını etkinleştir
     volumes:
