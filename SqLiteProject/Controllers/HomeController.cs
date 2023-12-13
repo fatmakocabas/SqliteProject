@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SqLiteProject.Data;
 using SqLiteProject.Models;
 using System.Diagnostics;
 
@@ -7,20 +8,21 @@ namespace SqLiteProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SqLiteContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, SqLiteContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
             List<UserModel> users = new List<UserModel>();
-            using (var db = new SqLiteContext())
-            {
-                users = db.Users.ToList();
+           
+                users = _context.Users.ToList();
 
-            }
+            
             ViewBag.users = users;
             return View();
         }
@@ -38,11 +40,10 @@ namespace SqLiteProject.Controllers
         [HttpPost]
         public IActionResult AddUsers(UserModel user)
         {
-            using(var db=new SqLiteContext())
-            {
-                db.Add(user);
-                db.SaveChanges();
-            }
+            
+            _context.Add(user);
+            _context.SaveChanges();
+            
             return RedirectToAction("Index");
         }
     }

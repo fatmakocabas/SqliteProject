@@ -1,7 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using SqLiteProject.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<SqLiteContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("Connection"))
+);
 
 var app = builder.Build();
 

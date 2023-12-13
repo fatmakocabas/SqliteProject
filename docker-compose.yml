@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  sqliteproject:
+    image: sqliteproject
+    build:
+      context: .
+      dockerfile: SqLiteProject/Dockerfile
+    ports:
+      - 8080:80

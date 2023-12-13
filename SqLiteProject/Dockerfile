@@ -1,40 +1,21 @@
-﻿# Build Stage
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /app
-
-# Copy the entire project
+WORKDIR /src
+COPY ["SqLiteProject/SqLiteProject.csproj", "SqLiteProject/"]
+RUN dotnet restore "SqLiteProject/SqLiteProject.csproj"
 COPY . .
+WORKDIR "/src/SqLiteProject"
+RUN dotnet build "SqLiteProject.csproj" -c Release -o /app/build
 
-# Restore NuGet packages
-RUN dotnet restore
+FROM build AS publish
+RUN dotnet publish "SqLiteProject.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Install dotnet-ef global tool
-RUN dotnet tool install --global dotnet-ef --version 6.0.11
-
-# Set PATH for dotnet-ef
-ENV PATH="/root/.dotnet/tools:$PATH"
-
-# Change working directory to the project
-WORKDIR /app/SqLiteProject
-
-# Build the project
-RUN dotnet build -c Release -o /app/build
-
-# Copy Migrations folder
-COPY ./Migrations /app/Data/Migrations
-
-# Run migrations
-RUN dotnet ef database update
-
-# Publish the project
-RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
-
-# Runtime Stage
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+FROM base AS final
 WORKDIR /app
-
-# Copy the published output from the build stage
-COPY --from=build /app/publish .
-
-# Command to run when the container starts
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "SqLiteProject.dll"]
