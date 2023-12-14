@@ -12,6 +12,8 @@ services:
       - db
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ./Data:/app/Data 
   db:
     image: alpine:latest
     command: /bin/sh -c "apk add --no-cache sqlite && tail -f /dev/null"
